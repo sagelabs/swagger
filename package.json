@@ -115,7 +115,10 @@
     "yaml-js": "^0.1.4"
   },
   "config": {
-    "deps_check_dir": ".deps_check"
+    "deps_check_dir": ".deps_check",
+    "REPO_URL": "https://api.github.com/repos/sagelabs/monoenki",
+    "FILE_PATH": "backend/app/api/swagger.yml",
+    "DEFAULT_BRANCH": "develop"
   },
   "browserslist": [
     "> 1%",

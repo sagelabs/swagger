@@ -4,7 +4,7 @@ import EditorLayout from "./layout"
 import "swagger-ui/dist/swagger-ui.css"
 
 import EditorPlugin from "./plugins/editor"
-import MonoenkiPlugin from "./plugins/monoenki-storage"
+import GithubPlugin from "./plugins/github-storage"
 import ValidationApiPlugin from "./plugins/validation/apis"
 
 // eslint-disable-next-line no-undef
@@ -22,7 +22,7 @@ const defaults = {
   plugins: [
     EditorPlugin,
     ValidationApiPlugin,
-    MonoenkiPlugin
+    GithubPlugin
   ],
   components: {
     EditorLayout

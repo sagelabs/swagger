@@ -78,7 +78,10 @@ module.exports = function(options) {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV:  specialOptions.minimize ? JSON.stringify('production') : null,
-        WEBPACK_INLINE_STYLES: !Boolean(specialOptions.separateStylesheets)
+        WEBPACK_INLINE_STYLES: !Boolean(specialOptions.separateStylesheets),
+        REPO_URL: JSON.stringify(process.env.EDITOR_REPO_URL || pkg.config.REPO_URL),
+        FILE_PATH: JSON.stringify(process.env.EDITOR_FILE_PATH || pkg.config.FILE_PATH),
+        DEFAULT_BRANCH: JSON.stringify(process.env.EDITOR_DEFAULT_BRANCH || pkg.config.DEFAULT_BRANCH || "master")
       },
       'buildInfo': JSON.stringify({
         PACKAGE_VERSION: pkg.version,

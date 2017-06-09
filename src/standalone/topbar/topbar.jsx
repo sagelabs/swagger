@@ -6,52 +6,11 @@ import Modal from "boron/DropModal"
 import downloadFile from "react-file-download"
 import YAML from "js-yaml"
 import beautifyJson from "json-beautify"
+import { saveToPR } from "../../plugins/github-storage"
 
 import "react-dd-menu/dist/react-dd-menu.css"
 import "./topbar.less"
 import Logo from "./logo_small.png"
-
-const TOKEN_KEY = "swagger-editor-token"
-const CONTENT_SHA_KEY = "swagger-editor-content-sha"
-const NAME_KEY = "swagger-editor-name"
-
-function getOrCreateBranchAndGetContentSha(token, branch) {
-  return window.fetch("https://api.github.com/repos/sagelabs/monoenki/branches/" + branch, {
-    headers: {
-      Authorization: "token " + token,
-      Accept: "application/vnd.github.v3"
-    }
-  }).then(res => {
-    if (res.status === 404) {
-      return window.fetch("https://api.github.com/repos/sagelabs/monoenki/git/refs/heads/develop", {
-        headers: {
-          Authorization: "token " + token,
-          Accept: "application/vnd.github.v3"
-        },
-      }).then((res) => res.json())
-      .then((res) => window.fetch("https://api.github.com/repos/sagelabs/monoenki/git/refs", {
-        method: "POST",
-        headers: {
-          Authorization: "token " + token,
-          Accept: "application/vnd.github.v3"
-        },
-        body: JSON.stringify({
-          ref: "refs/heads/" + branch,
-          sha: res.object.sha
-        })
-      }))
-    }
-  })
-  .then(() => {
-    return window.fetch("https://api.github.com/repos/sagelabs/monoenki/contents/backend/app/api/swagger.yml?ref=" + branch, {
-      headers: {
-        Authorization: "token " + token,
-        Accept: "application/vnd.github.v3"
-      }
-    }).then(res => res.json())
-    .then(res => res.sha)
-  })
-}
 
 export default class Topbar extends React.Component {
   constructor(props, context) {
@@ -134,43 +93,7 @@ export default class Topbar extends React.Component {
     let jsContent = YAML.safeLoad(editorContent)
     let yamlContent = YAML.safeDump(jsContent)
 
-    if(!localStorage.getItem(TOKEN_KEY)) {
-      const token = window.prompt("github token")
-      localStorage.setItem(TOKEN_KEY, token)
-    }
-    const token = localStorage.getItem(TOKEN_KEY)
-    const commitMessage = prompt("Commit message")
-    const branchName = "swagger-" + localStorage.getItem(CONTENT_SHA_KEY) + localStorage.getItem(NAME_KEY)
-
-    getOrCreateBranchAndGetContentSha(token, branchName)
-    .then((sha) => window.fetch("https://api.github.com/repos/sagelabs/monoenki/contents/backend/app/api/swagger.yml", {
-        method: "PUT",
-        headers: {
-          Authorization: "token " + token,
-          Accept: "application/vnd.github.v3"
-        },
-        body: JSON.stringify({
-          path: "backend/app/api/swagger.yml",
-          message: commitMessage,
-          content: window.btoa(yamlContent),
-          sha: sha,
-          branch: branchName
-        })
-      })
-    )
-    .then(() => window.fetch("https://api.github.com/repos/sagelabs/monoenki/pulls", {
-        method: "POST",
-        headers: {
-          Authorization: "token " + token,
-          Accept: "application/vnd.github.v3"
-        },
-        body: JSON.stringify({
-          title: "Update swagger API definition",
-          base: "develop",
-          head: branchName
-        })
-      }))
-    .catch(console.error)
+    saveToPR(yamlContent)
   }
 
   convertToYaml = () => {
