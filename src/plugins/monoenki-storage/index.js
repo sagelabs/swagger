@@ -1,6 +1,7 @@
 const TOKEN_KEY = "swagger-editor-token"
 const CONTENT_KEY = "swagger-editor-content"
 const CONTENT_SHA_KEY = "swagger-editor-content-sha"
+const NAME_KEY = "swagger-editor-name"
 
 let localStorage = window.localStorage
 
@@ -16,6 +17,7 @@ export default function(system) {
     if(!localStorage.getItem(TOKEN_KEY)) {
       const token = window.prompt("github token")
       localStorage.setItem(TOKEN_KEY, token)
+      localStorage.setItem(NAME_KEY, Date.now())
     }
     const token = localStorage.getItem(TOKEN_KEY)
     window.fetch("https://api.github.com/repos/sagelabs/monoenki/contents/backend/app/api/swagger.yml", {
