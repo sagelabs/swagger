@@ -47,8 +47,10 @@
   <script src="./dist/swagger-editor-standalone-preset.js"> </script>
   <script>
   window.onload = function() {
+    window["SwaggerEditorBundle"] = window["SwaggerEditorBundle"] || window["swagger-editor-bundle"] || window["SwaggerReadOnlyBundle"] || window["swagger-read-only-bundle"]
+    window["SwaggerEditorStandalonePreset"] = window["SwaggerEditorStandalonePreset"] || window["swagger-editor-standalone-preset"]
     // Build a system
-    const editor = (SwaggerReadOnlyBundle || SwaggerEditorBundle)({
+    const editor = SwaggerEditorBundle({
       dom_id: '#swagger-editor',
       layout: 'StandaloneLayout',
       presets: [
