@@ -20,7 +20,10 @@ module.exports = require('./make-webpack-config.js')({
   entry: {
     "swagger-editor-bundle": [
       './src/index.js'
-    ]
+    ],
+    "swagger-read-only-bundle": [
+      './src/read-only-index.js'
+    ],
   },
 
   output:  {

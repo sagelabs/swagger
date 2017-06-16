@@ -1,6 +1,6 @@
 import deepMerge from "deepmerge"
 import SwaggerUI from "swagger-ui"
-import EditorLayout from "./editor-layout"
+import ReadOnlyLayout from "./read-only-layout"
 import "swagger-ui/dist/swagger-ui.css"
 
 import EditorPlugin from "./plugins/editor"
@@ -25,7 +25,7 @@ const defaults = {
     GithubPlugin
   ],
   components: {
-    EditorLayout
+    ReadOnlyLayout
   },
 }
 

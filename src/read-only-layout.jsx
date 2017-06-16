@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react"
 
-export default class StandaloneLayout extends React.Component {
+export default class ReadOnlyLayout extends React.Component {
 
   static propTypes = {
     errSelectors: PropTypes.object.isRequired,
@@ -15,20 +15,14 @@ export default class StandaloneLayout extends React.Component {
   render() {
     let { getComponent } = this.props
 
-    let ReadOnlyLayout = getComponent("ReadOnlyLayout", true)
-
-    if (ReadOnlyLayout) {
-      return <ReadOnlyLayout />
-    }
-
-    let EditorLayout = getComponent("EditorLayout", true)
-
-    let Topbar = getComponent("Topbar", true)
+    let Container = getComponent("Container")
+    let UIBaseLayout = getComponent("BaseLayout", true)
 
     return (
       <div>
-        <Topbar></Topbar>
-        <EditorLayout></EditorLayout>
+        <Container className='container'>
+          <UIBaseLayout/>
+        </Container>
       </div>
     )
   }
